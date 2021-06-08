@@ -1,0 +1,9 @@
+admin: 
+Kaan 
+-password as usual-
+
+users:
+name 
+name
+name@example.com 
+(Ex: Username: ali, Password: ali, Mail: ali@example.com )
