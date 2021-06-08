@@ -1,0 +1,48 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<h2>Create a Listing</h2>
+
+<style>
+    .div {
+        margin-left: 10px;
+        margin-top: 10px;
+    }
+
+</style>
+
+<form action="{% url 'index' %}" method="POST">
+    {% csrf_token %}
+    <div class="div">
+    
+        <input style="width: 498px;" type="text" id="title" name="title"  placeholder="Title...">
+    </div>
+    
+    <div class="div">
+        <textarea name="description" id="description" cols="66" rows="10" placeholder="Description..."></textarea>
+    </div>
+    
+    <div class="div">
+        <input style="width: 500px;" type="url" id="image url" name="image url" placeholder="Image url...">
+    </div>
+
+    <div class="div">
+        <select name="category" id="category">
+            <option value="Car">Car</option>
+            <option value="House">House</option>
+            <option value="Sports">Sports</option>
+            <option value="Technology">Technology</option>
+        </select>
+    </div>
+
+    <div class="div">
+        <input type="number" id="bid" name="bid" placeholder="Bid...">
+    </div>
+    
+    
+    <div class="div">
+        <input style="background-color: blue; width: 75px; margin-left: 425px; color: white; border-radius: 10px;" type="submit" value="Add">
+    </div>
+    
+</form>
+{% endblock %}

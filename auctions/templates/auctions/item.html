@@ -1,0 +1,96 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2 style="margin-left: 25px ;">{{ item.title }}</h2>
+    <div style="margin-top: 20px; padding-left: 25px; overflow: hidden;">
+        <img style="width: 500px; height: 450px;  float: left; margin-top: 10px; margin-bottom: 10px; margin-right: 50px;" src="{{item.image_url}}" alt="">
+        <div style="width: 800px; height: 130px; overflow: auto;">
+            <p style="margin-top: 20px;">{{item.description}}</p>
+        </div>
+        
+        
+        <h5 style="margin-top: 20px; font-weight: bold;">${{item.bid.bid_price}}</h5>
+        <h4 style ="margin-top: 20px; font-weight: bold;">Details:</h4>
+        <ul  style ="margin-left: 20px; overflow: hidden;">
+            <li>Listed by: {{item.user.username}}</li>
+            <li>Category :
+                {% if item.category %}
+                    {{item.category}}
+                {% else %}
+                    No category specified.
+                {% endif %}
+            </li>
+        </ul>
+        
+        {% if user.is_authenticated %}
+        <form action="{% url 'item' item.id %}" method="POST">
+            {% csrf_token %}
+            <input style="background-color: blue; border-radius: 10px;" type="submit" value="Watchlist" name="watchlist">
+        </form>
+
+        {% if w_message %}
+            <p style="font-style: italic; display: inline;">{{ w_message }}</p>
+        {% endif %}
+
+
+        {% endif %}
+        {% if item.user.username == request.user.username %}
+            <form action="{% url 'item' item.id %}" method="POST">
+                {% csrf_token %}
+                <input style="margin-top: 5px; background-color: crimson; border-radius: 10px;" type="submit" value="Close Auction" name="close">
+            </form>
+        {% endif %}
+
+        {% if item.is_closed %}
+            <p style="font-weight: bold; color: red; ">Auction Closed</p>
+        {% endif %}
+
+        <br><br><br>
+        {% if item.is_closed %}
+            {% if request.user.id == item.bid.bid_user.id %}
+                <p style="font-weight: bold; color: green;">You Won The Auction!</p>
+            {% else %}
+                <p style="font-weight: bold; color: red;">You Lost The Aucion...</p>
+            {% endif %}
+        {% endif %}
+
+        {{item.bid.bid_count}} bid(s) so far. {{item.bid.bid_user.username}} owns the current bid.
+        {% if user.is_authenticated %}
+            <form action="{% url 'item' item.id %}" method="POST" name="bid">
+                {% csrf_token %}
+                <input type="text" name="bid" placeholder="Bid...">
+                <input type="submit" value="Place Bid">
+            </form>
+            {% if message %}
+                {{ message }}
+            {% endif %}
+        {% endif %}
+
+        {% if not user.is_authenticated %}
+        <br><br><br><br>
+        {% endif %}
+
+
+        <h4 style="margin-top: 25px;">User Comments: </h4>
+        <ul>
+            {% for comment in item.comment.all %}
+                <li>{{ comment }}</li>
+            {% empty %}
+                <li>No comment yet...</li>
+            {% endfor %}
+        </ul>
+        {% if user.is_authenticated %}
+            <form action="{% url 'item' item.id %}" method="POST" name="comment">
+                {% csrf_token %}
+                <input type="text" name="comment" placeholder="Add a comment...">
+                <input type="submit" value="Publish Comment">
+            </form>
+        {% endif %}
+
+
+
+
+    </div>
+    
+    
+{% endblock %}

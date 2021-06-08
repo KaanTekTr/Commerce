@@ -1,0 +1,21 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+<h2>Category: {{ category_name }}</h2>
+
+{% for listing in listings %}
+
+<div style="border-style: solid; border-radius: 10px; border-color: gray; margin-top: 20px; padding-left: 25px; padding-right: 25px; overflow: hidden;">
+    <img style="width: 250px; height: 250px;  float: left; margin-top: 10px; margin-bottom: 10px; margin-right: 20px;" src="{{listing.image_url}}" alt="">
+    <div style="margin-top: 40px; margin-right: 10px; font-size: 30px;"><a  href="{% url 'item' listing.id %}">{{listing.title}}</a></div>
+    <h5 style="margin-top: 20px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{listing.description}}</h5>
+    <h6 style="margin-top: 20px;">Price: ${{listing.bid.bid_price}}</h6>
+</div>
+    
+{% empty %}
+<li>No item in watchlist</li>
+
+{% endfor %}
+    
+{% endblock %}
